@@ -74,8 +74,11 @@ function loadltc_laz(fname::String,limits::Vector{Float64},
 
 end
 
+
+# sb!! if calc_trans = true
 function createfiles(outdir::String,outstr::String,pts::Matrix{Float64},calc_trans::Bool,calc_swr::Int64,
     loc_time=nothing,time_zone=nothing)
+    @info "create file 1"
 
     outfile  = joinpath(outdir,"Output_"*outstr*".nc")
 
@@ -193,7 +196,7 @@ end
 
 function createfiles(outdir::String,outstr::String,pts::Matrix{Float64},calc_trans::Bool,calc_swr::Int64,
     forest_type::String,season::String,calc_terrain::Bool,loc_time=nothing,time_zone=nothing)
-
+    @info "create file 2"
     outfile  = joinpath(outdir,"Output_"*outstr*".nc")
 
     ds = NCDataset(outfile,"c",format=:netcdf4_classic)
