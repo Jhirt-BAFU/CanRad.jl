@@ -36,7 +36,7 @@ function chm2rad!(pts::Matrix{Float64},dat_in::Dict{String, String},par_in::Dict
 
     if calc_trans
     # sb!!
-    @info "(if) calc_trans " * calc_trans
+    @info "(if) calc_trans " 
         loc_time     = collect(Dates.DateTime(t1,"dd.mm.yyyy HH:MM:SS"):Dates.Minute(2):Dates.DateTime(t2,"dd.mm.yyyy HH:MM:SS"))
         loc_time_agg = collect(Dates.DateTime(t1,"dd.mm.yyyy HH:MM:SS"):Dates.Minute(tstep):Dates.DateTime(t2,"dd.mm.yyyy HH:MM:SS"))
     
@@ -45,11 +45,11 @@ function chm2rad!(pts::Matrix{Float64},dat_in::Dict{String, String},par_in::Dict
         solar = SOLAR(loc_time = loc_time, loc_time_agg = loc_time_agg, tstep = tstep, radius = canrad.radius, time_zone = time_zone)
     else    
     # sb!!
-    @info "(else) calc_trans " * calc_trans
+    @info "(else) calc_trans " 
         #dataset = createfiles(outdir,outstr,pts,calc_trans,calc_swr)
         loc_time     = collect(Dates.DateTime(t1,"dd.mm.yyyy HH:MM:SS"):Dates.Minute(2):Dates.DateTime(t2,"dd.mm.yyyy HH:MM:SS"))
         loc_time_agg = collect(Dates.DateTime(t1,"dd.mm.yyyy HH:MM:SS"):Dates.Minute(tstep):Dates.DateTime(t2,"dd.mm.yyyy HH:MM:SS"))
-        dataset = createfiles(outdir,outstr,pts,calc_trans,calc_swr,forest_type,season,calc_terrain,loc_time_agg,time_zone)
+        dataset = createfiles(outdir,outstr,pts,calc_trans,calc_swr,forest_type,season,calc_terrain)
     end
 
     save_images && (images = create_exmat(outdir,outstr,pts,canrad.mat2ev,forest_type,season,calc_terrain))

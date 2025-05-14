@@ -193,7 +193,7 @@ function createfiles_terrain(outdir::String,outstr::String,pts::Matrix{Float64},
     return ds
 
 end
-
+# sb!! --
 function createfiles(outdir::String,outstr::String,pts::Matrix{Float64},calc_trans::Bool,calc_swr::Int64,
     forest_type::String,season::String,calc_terrain::Bool,loc_time=nothing,time_zone=nothing)
     @info "create file 2"
