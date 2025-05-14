@@ -138,7 +138,7 @@ end
 
 function createfiles_terrain(outdir::String,outstr::String,pts::Matrix{Float64},calc_trans::Bool,calc_swr::Int64,
     loc_time=nothing,time_zone=nothing)
-
+    @info "create file 2"
     outfile  = joinpath(outdir,"Output_"*outstr*".nc")
 
     ds = NCDataset(outfile,"c",format=:netcdf4_classic)
@@ -196,7 +196,7 @@ end
 # sb!! --
 function createfiles(outdir::String,outstr::String,pts::Matrix{Float64},calc_trans::Bool,calc_swr::Int64,
     forest_type::String,season::String,calc_terrain::Bool,loc_time=nothing,time_zone=nothing)
-    @info "create file 2"
+    @info "create file 3"
     outfile  = joinpath(outdir,"Output_"*outstr*".nc")
 
     ds = NCDataset(outfile,"c",format=:netcdf4_classic)
@@ -451,7 +451,6 @@ end
 
 function createfiles_fromSHI(outdir::String,outstr::String,pts::Matrix{Float64},calc_swr::Int64,
     SHI_summer::Bool,SHI_winter::Bool,SHI_terrain::Bool,SHI_evergreen::Bool,loc_time=nothing,time_zone=nothing)
-
     outfile  = joinpath(outdir,"Output_"*outstr*".nc")
 
     ds = NCDataset(outfile,"c",format=:netcdf4_classic)
