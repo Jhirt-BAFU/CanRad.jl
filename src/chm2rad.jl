@@ -31,12 +31,7 @@ function chm2rad!(pts::Matrix{Float64},dat_in::Dict{String, String},par_in::Dict
     global outtext = "Processing "*cfmt.("%.$(0)f", 0)*"% ... "*string(0)*" of "*string(size(pts,1))*".txt"
     writedlm(joinpath(outdir,outtext),NaN)
 
-    # sb!!
-    @info "Hallo" 
-
     if calc_trans
-    # sb!!
-    @info "(if) calc_trans " 
         loc_time     = collect(Dates.DateTime(t1,"dd.mm.yyyy HH:MM:SS"):Dates.Minute(2):Dates.DateTime(t2,"dd.mm.yyyy HH:MM:SS"))
         loc_time_agg = collect(Dates.DateTime(t1,"dd.mm.yyyy HH:MM:SS"):Dates.Minute(tstep):Dates.DateTime(t2,"dd.mm.yyyy HH:MM:SS"))
     
@@ -44,11 +39,7 @@ function chm2rad!(pts::Matrix{Float64},dat_in::Dict{String, String},par_in::Dict
         pts_lat, pts_lon = get_latlon(pts_x,pts_y,epsg_code)
         solar = SOLAR(loc_time = loc_time, loc_time_agg = loc_time_agg, tstep = tstep, radius = canrad.radius, time_zone = time_zone)
     else    
-    # sb!!
-    @info "(else) calc_trans " 
         #dataset = createfiles(outdir,outstr,pts,calc_trans,calc_swr)
-        loc_time     = collect(Dates.DateTime(t1,"dd.mm.yyyy HH:MM:SS"):Dates.Minute(2):Dates.DateTime(t2,"dd.mm.yyyy HH:MM:SS"))
-        loc_time_agg = collect(Dates.DateTime(t1,"dd.mm.yyyy HH:MM:SS"):Dates.Minute(tstep):Dates.DateTime(t2,"dd.mm.yyyy HH:MM:SS"))
         dataset = createfiles(outdir,outstr,pts,calc_trans,calc_swr,forest_type,season,calc_terrain)
     end
 
@@ -710,7 +701,6 @@ function chm2rad!(pts::Matrix{Float64},dat_in::Dict{String, String},par_in::Dict
             if (season == "summer") || (season == "both")
 
                 svf_p_s, svf_h_s = calc_svf(canrad,mat2ev_s)
-                @info "Variable svf_planar_s" # sb!!
                 dataset["svf_planar_s"][crx] = Int8(round(svf_p_s*100))
                 dataset["svf_hemi_s"][crx]  = Int8(round(svf_h_s*100))
 
