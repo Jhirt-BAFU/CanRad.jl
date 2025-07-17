@@ -8,9 +8,11 @@ dx2 = 1 #parse(Int, ARGS[3]) # last job
 TILESIZE = 1000 # in m, should be same value as in prep_cluster_input.jl
 SUB_TILESIZE = 100 # in m, a number that goes evenly into TILESIZE (model is run on this tile size to reduce RAM)
 
-OUTPUT_PATH = "E:/canrad_output/local/01_calculated_tiles"
-INPUT_PATH = "E:/canrad_data/model"
-SETTINGS_PATH = "E:/canrad_data/settings/local"
+
+# What/where is canrad_data folder ? 
+OUTPUT_PATH = "C:/Users/joshu/Documents/BAFU/canrad_output/local/01_calculated_tiles"
+INPUT_PATH = "D:/canrad/input"
+SETTINGS_PATH = "C:/Users/joshu/Documents/BAFU/canrad_settings"
 
 OUTPUT_FOLDER_NAME = "output_" * tiles  # name of output folder
 OUTPUT_FOLDER = joinpath(OUTPUT_PATH, OUTPUT_FOLDER_NAME)
