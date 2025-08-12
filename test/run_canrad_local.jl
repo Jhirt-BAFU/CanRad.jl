@@ -1,7 +1,7 @@
 using DelimitedFiles
 using CanRad, SpatialFileIO, Formatting, NCDatasets
 
-tiles = "R01" #ARGS[1]
+tiles = "ZH" #ARGS[1]
 dx1 = 1 #parse(Int, ARGS[2]) # first job
 dx2 = 1 #parse(Int, ARGS[3]) # last job
 
@@ -10,9 +10,9 @@ SUB_TILESIZE = 100 # in m, a number that goes evenly into TILESIZE (model is run
 
 
 # What/where is canrad_data folder ? 
-OUTPUT_PATH = "C:/Users/joshu/Documents/BAFU/canrad_output/local/01_calculated_tiles"
-INPUT_PATH = "D:/canrad/input"
-SETTINGS_PATH = "C:/Users/joshu/Documents/BAFU/canrad_settings"
+OUTPUT_PATH = "C:/Users/Z70AJHI/project/CanRad.jl/output"
+INPUT_PATH = "W:/GIS/Projekte/Wald/Projekte/2025_LFI_CanRad/input"
+SETTINGS_PATH = "C:/Users/Z70AJHI/project/CanRad.jl/run"
 
 OUTPUT_FOLDER_NAME = "output_" * tiles  # name of output folder
 OUTPUT_FOLDER = joinpath(OUTPUT_PATH, OUTPUT_FOLDER_NAME)
