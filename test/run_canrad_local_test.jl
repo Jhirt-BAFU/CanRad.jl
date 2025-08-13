@@ -10,9 +10,9 @@ SUB_TILESIZE = 100 # in m, a number that goes evenly into TILESIZE (model is run
 
 
 # What/where is canrad_data folder ? 
-OUTPUT_PATH = "C:/Users/Z70AJHI/project/CanRad.jl/output"
-INPUT_PATH = "W:/GIS/Projekte/Wald/Projekte/2025_LFI_CanRad/input"
-SETTINGS_PATH = "C:/Users/Z70AJHI/project/CanRad.jl/run"
+#OUTPUT_PATH = "C:/Users/Z70AJHI/project/CanRad.jl/output"
+#INPUT_PATH = "W:/GIS/Projekte/Wald/Projekte/2025_LFI_CanRad/input"
+#SETTINGS_PATH = "C:/Users/Z70AJHI/project/CanRad.jl/run"
 
 OUTPUT_FOLDER_NAME = "output_" * tiles  # name of output folder
 OUTPUT_FOLDER = joinpath(OUTPUT_PATH, OUTPUT_FOLDER_NAME)
@@ -37,14 +37,12 @@ for jdx in dx1:dx2 # loop through the jobs in sequential order
 	tile_name = string(readdlm(TILES_FILE)[jdx])
 
 	try # designed to catch a tile if it fails
-
 		# Check if tile has been run (and run if it hasn't)
 		if isfile(joinpath(PROGRESS_FOLDER, tile_name * ".txt")) || isfile(joinpath(PROGRESS_TEMP_FOLDER, tile_name))
 
 			println("already done with: " * tile_name)
 
 		else
-
 			xllcorner = parse(Int, split(tile_name, "_")[1])
 			yllcorner = parse(Int, split(tile_name, "_")[2])
 			limits = hcat(xllcorner, xllcorner + TILESIZE, yllcorner, yllcorner + TILESIZE)
@@ -54,7 +52,6 @@ for jdx in dx1:dx2 # loop through the jobs in sequential order
 
 			
 			if sum(ptdx) > 0 # if the sum of ptdx is 0, the tile must be placed entirely in a foreign country.
-
 				pts_all = hcat(ptsx[ptdx.>0], ptsy[ptdx.>0], ptdx[ptdx.>0])
 
 				# create and run the tasks
@@ -74,8 +71,7 @@ for jdx in dx1:dx2 # loop through the jobs in sequential order
 					idx = (limx[x] .<= pts_all[:, 1] .< limx[x+1]) .&
 						  (limy[y] .<= pts_all[:, 2] .< limy[y+1])
 
-					if sum(idx) > 0 # idx is a boolean array, sum uses the side effect, that true is 1 and false us 0 in Julia
-
+					if sum(idx) > 0 # idx is a boolean array, sum uses the side effect, that true is 1 and false is 0 in Julia
 						pts = pts_all[idx, :]
 
 						tilestr = string(limx[x]) * "_" * string(limy[y])
@@ -97,7 +93,7 @@ for jdx in dx1:dx2 # loop through the jobs in sequential order
 							# shi2rad!(shi_file, par_in_shi, outdir_June, taskID, pts[:, 3])
 
 
-							rm(shi_file, force=true) 
+							rm(shi_file, force=true)
 							# hlm_file = joinpath(outdir, tilestr, "HLM_" * tilestr * ".nc")
 							# rm(hlm_file, force=true)
 						else
