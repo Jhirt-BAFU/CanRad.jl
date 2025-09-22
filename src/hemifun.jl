@@ -209,11 +209,11 @@ function dist(dat_x::Float64,dat_y::Float64,xcoor::Float64,ycoor::Float64)
 end
 
 function dist3d(dat_x::Vector{Float64},dat_y::Vector{Float64},dat_z::Vector{Float64},xcoor::Float64,ycoor::Float64,zcoor::Float64)
-    return hypot.(hypot.(dat_x.-xcoor,dat_y.-ycoor),dat_z.-zcoor)
+    return hypot.(dat_x.-xcoor,dat_y.-ycoor,dat_z.-zcoor)
 end
 
 function dist3d(dat_x::Float64,dat_y::Float64,dat_z::Float64,xcoor::Float64,ycoor::Float64,zcoor::Float64)
-    return hypot(hypot.(dat_x.-xcoor,dat_y.-ycoor),dat_z.-zcoor)
+    return hypot.(dat_x.-xcoor,dat_y.-ycoor,dat_z.-zcoor)
 end
 
 function getsurfdat(dsm_x::Vector{Float64},dsm_y::Vector{Float64},dsm_z::Vector{Float64},
@@ -234,8 +234,10 @@ function getsurfdat(dsm_x::Vector{Float64},dsm_y::Vector{Float64},dsm_z::Vector{
     xcoor::Float64,ycoor::Float64,ecoor::Float64,peri::Number)
 
     # for lidar/terrain points
-    dsm_d = dist3d(dsm_x,dsm_y,dsm_z,xcoor,ycoor,ecoor).<peri
-    return deleteat!(dsm_x,.!dsm_d), deleteat!(dsm_y,.!dsm_d), deleteat!(dsm_z,.!dsm_d)
+    # Compute mask for points within peri distance
+    dsm_d = dist3d(dsm_x, dsm_y, dsm_z, xcoor, ycoor, ecoor) .< peri
+    # Use logical indexing to efficiently extract elements
+    return dsm_x[dsm_d], dsm_y[dsm_d], dsm_z[dsm_d]
 end
 
 function getsurfdat(dsm_x::Vector{Float64},dsm_y::Vector{Float64},dsm_z::Vector{Float64},

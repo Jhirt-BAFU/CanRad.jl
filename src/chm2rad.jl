@@ -430,8 +430,7 @@ function chm2rad!(pts::Matrix{Float64},dat_in::Dict{String, String},par_in::Dict
 
             if terrain_highres
                 # get the high-res local terrain
-                pt_dtm_x, pt_dtm_y, pt_dtm_z = getsurfdat(copy(dtm_x),copy(dtm_y),copy(dtm_z),
-                                                pts_x[crx],pts_y[crx],pts_e[crx],highres_peri);
+                pt_dtm_x, pt_dtm_y, pt_dtm_z = getsurfdat(dtm_x,dtm_y,dtm_z, pts_x[crx],pts_y[crx],pts_e[crx],highres_peri);
                 pt_dtm_x, pt_dtm_y = pcd2pol2cart!(ter2rad,pt_dtm_x, pt_dtm_y, pt_dtm_z,pts_x[crx],pts_y[crx],pts_e[crx],"terrain",rbins_dtm,pts_z[crx])
 
                 save_horizon && copy!(dtm_mintht,ter2rad.mintht[ter2rad.dx1:ter2rad.dx2-1])
@@ -440,7 +439,7 @@ function chm2rad!(pts::Matrix{Float64},dat_in::Dict{String, String},par_in::Dict
 
             if terrain_lowres
                 # get the low-res regional terrain
-                pt_dem_x, pt_dem_y, pt_dem_z = getsurfdat(copy(dem_x),copy(dem_y),copy(dem_z),pts_x[crx],pts_y[crx],pts_e[crx],lowres_peri);
+                pt_dem_x, pt_dem_y, pt_dem_z = getsurfdat(dem_x,dem_y,dem_z,pts_x[crx],pts_y[crx],pts_e[crx],lowres_peri);
                 pt_dem_x, pt_dem_y = pcd2pol2cart!(ter2rad,pt_dem_x, pt_dem_y, pt_dem_z,pts_x[crx],pts_y[crx],pts_e_dem[crx],"terrain",rbins_dem,pts_z[crx]);
 
                 if save_horizon
