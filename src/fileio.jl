@@ -85,13 +85,13 @@ function createfiles(outdir::String,outstr::String,pts::Matrix{Float64},calc_tra
     defVar(ds,"easting",pts[:,1],("Coordinates",))
     defVar(ds,"northing",pts[:,2],("Coordinates",))
 
-    defVar(ds,"svf_planar",Int32,("Coordinates",),deflatelevel=5,fillvalue = Int8(-1),
+    defVar(ds,"svf_planar",Int8,("Coordinates",),deflatelevel=5,fillvalue = Int8(-1),
         attrib=[
             "long_name"=> "sky-view fraction planar",
             "comments" =>
             "perspective of a flat planar",])
 
-    defVar(ds,"svf_hemi",Int32,("Coordinates",),deflatelevel=5,fillvalue = Int8(-1),
+    defVar(ds,"svf_hemi",Int8,("Coordinates",),deflatelevel=5,fillvalue = Int8(-1),
         attrib=[
             "long_name"=> "sky-view fraction hemispherical",
             "comments" =>
@@ -109,7 +109,7 @@ function createfiles(outdir::String,outstr::String,pts::Matrix{Float64},calc_tra
 
         defVar(ds,"datetime",loc_time,("datetime",),attrib=["comments" => dt_comment])
 
-        defVar(ds,"for_trans",Int32,("datetime","Coordinates",),fillvalue = Int8(-1),
+        defVar(ds,"for_trans",Int8,("datetime","Coordinates",),fillvalue = Int8(-1),
                     deflatelevel=5,                            
                     attrib=["long_name"=> "forest transmissivity",])
 
@@ -144,13 +144,13 @@ function createfiles_terrain(outdir::String,outstr::String,pts::Matrix{Float64},
     defVar(ds,"easting",pts[:,1],("Coordinates",))
     defVar(ds,"northing",pts[:,2],("Coordinates",))
 
-    defVar(ds,"svf_planar_t",Int32,("Coordinates",),deflatelevel=5,fillvalue = Int8(-1),
+    defVar(ds,"svf_planar_t",Int8,("Coordinates",),deflatelevel=5,fillvalue = Int8(-1),
         attrib=[
             "long_name"=> "sky-view fraction planar",
             "comments" =>
             "perspective of a flat planar",])
 
-    defVar(ds,"svf_hemi_t",Int32,("Coordinates",),deflatelevel=5,fillvalue = Int8(-1),
+    defVar(ds,"svf_hemi_t",Int8,("Coordinates",),deflatelevel=5,fillvalue = Int8(-1),
         attrib=[
             "long_name"=> "sky-view fraction hemispherical",
             "comments" =>
@@ -168,7 +168,7 @@ function createfiles_terrain(outdir::String,outstr::String,pts::Matrix{Float64},
 
         defVar(ds,"datetime",loc_time,("datetime",),attrib=["comments" => dt_comment])
 
-        defVar(ds,"trans_t",Int32,("datetime","Coordinates",),fillvalue = Int8(-1),
+        defVar(ds,"trans_t",Int8,("datetime","Coordinates",),fillvalue = Int8(-1),
                     deflatelevel=5,                            
                     attrib=["long_name"=> "forest transmissivity",])
 
@@ -204,14 +204,14 @@ function createfiles(outdir::String,outstr::String,pts::Matrix{Float64},calc_tra
 
     if forest_type == "evergreen"
 
-        defVar(ds,"svf_planar_e",Int32,("Coordinates",),deflatelevel=5,fillvalue = Int32(-1),
+        defVar(ds,"svf_planar_e",Int8,("Coordinates",),deflatelevel=5,fillvalue = Int8(-1),
             attrib=[
                 "long_name"=> "sky-view fraction planar evergreen forest",
                 "comments" =>
                 "perspective of a flat planar surface
                 calculated for 100% evergreen forest"
                     ,])
-        defVar(ds,"svf_hemi_e",Int32,("Coordinates",),deflatelevel=5,fillvalue = Int32(-1),
+        defVar(ds,"svf_hemi_e",Int8,("Coordinates",),deflatelevel=5,fillvalue = Int8(-1),
             attrib=[
                 "long_name"=> "sky-view fraction hemispherical evergreen forest",
                 "comments" =>
@@ -295,7 +295,7 @@ function createfiles(outdir::String,outstr::String,pts::Matrix{Float64},calc_tra
 
         if forest_type == "evergreen"
 
-            defVar(ds,"for_trans_e",Int32,("datetime","Coordinates",),fillvalue = Int8(-1),
+            defVar(ds,"for_trans_e",Int8,("datetime","Coordinates",),fillvalue = Int8(-1),
                 deflatelevel=5,
                 attrib=[
                     "long_name"=> "forest transmissivity evergreen forest",
@@ -307,7 +307,7 @@ function createfiles(outdir::String,outstr::String,pts::Matrix{Float64},calc_tra
 
             if (season == "summer") || (season == "both")
 
-                defVar(ds,"for_trans_s",Int32,("datetime","Coordinates",),fillvalue = Int8(-1),
+                defVar(ds,"for_trans_s",Int8,("datetime","Coordinates",),fillvalue = Int8(-1),
                     deflatelevel=5,
                     attrib=[
                         "long_name"=> "forest transmissivity summer",
@@ -319,7 +319,7 @@ function createfiles(outdir::String,outstr::String,pts::Matrix{Float64},calc_tra
 
             if (season == "winter") || (season == "both")
 
-                        defVar(ds,"for_trans_w",Int32,("datetime","Coordinates",),fillvalue = Int8(-1),
+                        defVar(ds,"for_trans_w",Int8,("datetime","Coordinates",),fillvalue = Int8(-1),
                             deflatelevel=5,
                             attrib=[
                                 "long_name"=> "forest transmissivity winter",
@@ -469,21 +469,21 @@ function createfiles_fromSHI(outdir::String,outstr::String,pts::Matrix{Float64},
 
     if SHI_evergreen
 
-        defVar(ds,"svf_planar_e",Int32,("Coordinates",),deflatelevel=5,fillvalue = Int32(-1),
+        defVar(ds,"svf_planar_e",Int8,("Coordinates",),deflatelevel=5,fillvalue = Int8(-1),
             attrib=[
                 "long_name"=> "sky-view fraction planar evergreen forest",
                 "comments" =>
                 "perspective of a flat planar surface
                 calculated for 100% evergreen forest"
                     ,])
-        defVar(ds,"svf_hemi_e",Int32,("Coordinates",),deflatelevel=5,fillvalue = Int32(-1),
+        defVar(ds,"svf_hemi_e",Int8,("Coordinates",),deflatelevel=5,fillvalue = Int8(-1),
             attrib=[
                 "long_name"=> "sky-view fraction hemispherical evergreen forest",
                 "comments" =>
                 "perspective of hemipherically shaped surface or plant
                 calculated for 100% evergreen forest",])
 
-        defVar(ds,"for_trans_e",Int32,("datetime","Coordinates",),fillvalue = Int8(-1),
+        defVar(ds,"for_trans_e",Int8,("datetime","Coordinates",),fillvalue = Int8(-1),
         deflatelevel=5,
         attrib=[
             "long_name"=> "forest transmissivity evergreen forest",
@@ -533,7 +533,7 @@ function createfiles_fromSHI(outdir::String,outstr::String,pts::Matrix{Float64},
                 calculated for deciduous or mixed forests in summer canopy conditions"
                 ,])
 
-        defVar(ds,"for_trans_s",Int32,("datetime","Coordinates",),fillvalue = Int8(-1),
+        defVar(ds,"for_trans_s",Int8,("datetime","Coordinates",),fillvalue = Int8(-1),
             deflatelevel=5,
             attrib=[
                 "long_name"=> "forest transmissivity summer",
@@ -584,7 +584,7 @@ function createfiles_fromSHI(outdir::String,outstr::String,pts::Matrix{Float64},
                 calculated for deciduous or mixed forests in winter canopy conditions"
                 ,])
 
-        defVar(ds,"for_trans_w",Int32,("datetime","Coordinates",),fillvalue = Int8(-1),
+        defVar(ds,"for_trans_w",Int8,("datetime","Coordinates",),fillvalue = Int8(-1),
         deflatelevel=5,
         attrib=[
             "long_name"=> "forest transmissivity winter",
