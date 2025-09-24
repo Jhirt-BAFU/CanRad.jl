@@ -281,6 +281,8 @@ function pcd2pol2cart!(pcd_x::Vector{Float64},pcd_y::Vector{Float64},pcd_z::Vect
 
     # for chm points
     normalise!(pcd_x,pcd_y,pcd_z,xcoor,ycoor,ecoor,image_height)
+    below_horizon = pcd_z .< 0.0
+    deleteat!(pcd_x,below_horizon); deleteat!(pcd_y,below_horizon); deleteat!(pcd_z,below_horizon)
 
     pcd_phi = copy(pcd_x)
     pcd_tht = copy(pcd_y)  
@@ -298,6 +300,8 @@ function pcd2pol2cart!(pcd_x::Vector{Float64},pcd_y::Vector{Float64},pcd_z::Vect
 
     # for lidar points
     normalise!(pcd_x,pcd_y,pcd_z,xcoor,ycoor,ecoor,image_height)
+    below_horizon = pcd_z .< 0.0
+    deleteat!(pcd_x,below_horizon); deleteat!(pcd_y,below_horizon); deleteat!(pcd_z,below_horizon)
 
     pcd_phi = Vector{Float64}(undef,size(pcd_x,1))
     pcd_tht = Vector{Float64}(undef,size(pcd_x,1))  
@@ -319,6 +323,8 @@ function pcd2pol2cart!(ter2rad::TER2RAD,pcd_x::Vector{Float64},pcd_y::Vector{Flo
 
     # for terrain points
     normalise!(pcd_x,pcd_y,pcd_z,xcoor,ycoor,ecoor,image_height)
+    below_horizon = pcd_z .< 0.0
+    deleteat!(pcd_x,below_horizon); deleteat!(pcd_y,below_horizon); deleteat!(pcd_z,below_horizon)
 
     pcd_phi = Vector{Float64}(undef,size(pcd_x,1))
     pcd_tht = Vector{Float64}(undef,size(pcd_x,1))  
