@@ -775,6 +775,35 @@ function chm2rad!(pts::Matrix{Float64},dat_in::Dict{String, String},par_in::Dict
 
     end # end crx
 
+    # TODO: add settings option for geotiff output
+    if make_geotiff && special_implementation == "swissrad"
+        res_y = pts_y[2] - pts_y[1]
+        min_y = minimum(pts_y) - res_y / 2.0
+        max_y = maximum(pts_y) + res_y / 2.0
+        len_y = Int((max_y - min_y) / res_y)
+        res_x = pts_x[len_y + 1] - pts_x[1]
+        min_x = minimum(pts_x) - res_x / 2.0
+        max_x = maximum(pts_x) + res_x / 2.0
+        len_x = Int((max_x - min_x) / res_x)
+
+        # rotate to orient content conforming to geotiff
+        band1 = rotr90(reshape(dataset["svf_planar_s"], len_x, len_y))
+        band2 = rotr90(reshape(dataset["svf_hemi_s"], len_x, len_y))
+        band3 = rotr90(reshape(dataset["svf_planar_w"], len_x, len_y))
+        band4 = rotr90(reshape(dataset["svf_hemi_w"], len_x, len_y))
+        band5 = rotr90(reshape(dataset["svf_planar_t"], len_x, len_y))
+        band6 = rotr90(reshape(dataset["svf_hemi_t"], len_x, len_y))
+
+        # TODO: multiband geotiff i.e. using []...
+        ga = GeoArrays.GeoArray(band2)
+
+        bbox!(ga, (min_x=min_x, min_y=max_y, max_x=max_x, max_y=min_y)) # intentionally swap y for negative y-res
+        epsg!(ga, 2056) # set crs to "EPSG:2056"
+
+        # TODO: annotate bands using band descriptions
+        GeoArrays.write(joinpath(outdir, outstr*".tif"), ga, options=Dict("TILED"=>"YES", "COMPRESS"=>"LERC_ZSTD"))
+    end
+
     close(dataset)
     save_images && close(images)
     save_horizon && close(hlm)

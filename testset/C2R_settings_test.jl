@@ -42,6 +42,7 @@ function chm2rad_settings(basefolder="empty"::String)
         "batch"        => false, # running in parallel or single process
         "save_images"  => true, # save the calculated images in a netcdf file
         "make_pngs"    => true, # create .png files from the SHIs
+        "make_geotiff" => true, # save sky view fraction to geotiff
         "save_horizon" => true, # save the calculated terrain horizon line 
         "progress"     => true  # report individual step progress in /ProgressLastPoint
 

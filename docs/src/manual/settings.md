@@ -152,22 +152,32 @@ Values are in pixels (image is 10000x10000 pixels)
 
 ## Run settings
 
-**batch**
+**batch**\
 *boolean*
 
 
-**save_images**
-*boolean*
-default = false
+**save_images**\
+*boolean*\
+default = false\
 save the calculated images in a netcdf file and generates .png files
+
+**make_pngs**\
+*boolean*\
+default = false\
+create .png files from the SHIs
+
+**make_geotiff [ C2R, T2R ] ( swissrad )**\
+*boolean*\
+default = false\
+save sky view fraction to geotiff
 
 **save_horizon [ C2R, T2R ]**\
 *boolean*\
 default = false
 
-**progress**
-*boolean*
-default = false
+**progress**\
+*boolean*\
+default = false\
 reports individual step progress in /ProgressLastPoint
 
 
@@ -176,7 +186,7 @@ reports individual step progress in /ProgressLastPoint
 Written for a specific application and uses specific combinations of datasets
 
 Current options:\
-**swissrad** used to calculate the Swiss nationwide dataset. 
+**swissrad** used to calculate the Swiss nationwide dataset.\
 **oshd** used to calculate across domains relevant to oshd (uses a pre-calculated horizon line to ensure compatibility with downscaled SWR)
 
 
