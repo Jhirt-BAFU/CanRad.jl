@@ -28,7 +28,7 @@
     lens_profile_rpix::Vector{Float64} = collect(0:1/9:1)
 
     ring_tht::Vector{Float64}    = collect(0:90/9:90)
-    ring_radius::Vector{Float64} = pyinterp.interp1d(lens_profile_tht,lens_profile_rpix*radius)(ring_tht)
+    ring_radius::Vector{Float64} = linear_interpolation(lens_profile_tht, lens_profile_rpix * radius, extrapolation_bc=Line())(ring_tht)
 
     w2all::Vector{Float64}       = fill(NaN,(size(ring_radius,1)-1))
     surf_area_p::Vector{Float64} = fill(NaN,(size(ring_radius,1)-1))

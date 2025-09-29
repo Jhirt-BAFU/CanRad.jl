@@ -4,14 +4,7 @@ using DelimitedFiles, DataStructures, LasIO, LazIO,
     Statistics, Dates, Interpolations, Images,
     DataFrames, Format, Distributed, Distributions,
     SpatialFileIO, NCDatasets, Chain, Pkg, Proj, MarketTechnicals,
-    Parameters, Impute
-
-using Conda, PyCall
-
-function __init__()
-    @eval global pyinterp  = pyimport("scipy.interpolate")
-    @eval global scipyspat = pyimport("scipy.spatial")
-end
+    Parameters, Impute, Interpolations, NearestNeighbors, ScatteredInterpolation
 
 include("constants.jl")
 include("fileio.jl")
@@ -24,8 +17,9 @@ include("ter2rad.jl")
 include("shi2rad.jl")
 
 export
-    pyinterp,
-    scipyspat,
+    ScatteredInterpolation,
+    Interpolations,
+    NearestNeighbors,
     CANRAD,
     SOLAR,
     RADIATION,

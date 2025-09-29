@@ -22,24 +22,50 @@ function clipdat!(inpcx::Vector{Float64},inpcy::Vector{Float64},inpcz::Vector{Fl
 
 end
 
-function findelev!(inpcx::Vector{Float64},inpcy::Vector{Float64},inpcz::Vector{Float64},x,y,
-    limits::Vector{Float64},peri::Number,elev::Vector{Float64},interp_method::String="linear")
 
-    getlimits!(limits,x,y,peri)
+# TODO ivnestigate
+function findelev!(inpcx::Vector{Float64}, inpcy::Vector{Float64}, inpcz::Vector{Float64}, x, y,
+    limits::Vector{Float64}, peri::Number, elev::Vector{Float64}, interp_method::String="linear")
 
-    clipdat!(inpcx,inpcy,inpcz,limits,Vector{Bool}(undef,size(inpcx,1))),peri;
-    elev .= pyinterp.griddata(hcat(inpcx,inpcy), inpcz, (x, y), method=interp_method)
+    getlimits!(limits, x, y, peri)
+    clipdat!(inpcx, inpcy, inpcz, limits, Vector{Bool}(undef, size(inpcx, 1)), peri)
+    
+    # Handle empty input after clipping
+    if isempty(inpcx) || isempty(inpcz)
+        fill!(elev, NaN)
+        return
+    end
 
+    # Prepare points for interpolation
+    points = hcat(inpcx, inpcy)'  # 2 x n_points
+    method = interp_method == "linear" ? Linear() : NearestNeighbor()
+    itp = ScatteredInterpolation.interpolate(method, points, inpcz)
+    
+    # Evaluate at query points (x, y)
+    query_points = hcat(vec(x), vec(y))'  # 2 x n_queries
+    elev .= ScatteredInterpolation.evaluate(itp, query_points)
 end
 
-function findelev(inpcx::Vector{Float64},inpcy::Vector{Float64},inpcz::Vector{Float64},x,y,
-    peri=20.0::Number,interp_method::String="linear")
+# TODO investigate
+function findelev(inpcx::Vector{Float64}, inpcy::Vector{Float64}, inpcz::Vector{Float64}, x, y,
+    peri=20.0::Number, interp_method::String="linear")
 
-    limits = getlimits!(Vector{Float64}(undef,4),x,y,peri)
+    limits = getlimits!(Vector{Float64}(undef, 4), x, y, peri)
+    clipdat!(inpcx, inpcy, inpcz, limits, Vector{Bool}(undef, size(inpcx, 1)), peri)
+    
+    # Handle empty input after clipping
+    if isempty(inpcx) || isempty(inpcz)
+        return fill(NaN, size(x))
+    end
 
-    clipdat!(inpcx,inpcy,inpcz,limits,Vector{Bool}(undef,size(inpcx,1))),peri;
-    return pyinterp.griddata(hcat(inpcx,inpcy), inpcz, (x, y), method=interp_method)
-
+    # Prepare points for interpolation
+    points = hcat(inpcx, inpcy)'  # 2 x n_points
+    method = interp_method == "linear" ? Linear() : NearestNeighbor()
+    itp = ScatteredInterpolation.interpolate(method, points, inpcz)
+    
+    # Evaluate at query points (x, y)
+    query_points = hcat(vec(x), vec(y))'  # 2 x n_queries
+    return ScatteredInterpolation.evaluate(itp, query_points)
 end
 
 function getlimits!(limits,pts_x,pts_y,peri)
@@ -392,14 +418,15 @@ function prepsurfdat!(matcrt_x::Vector{Float64},matcrt_y::Vector{Float64},matcrt
 
 end
 
-function findpairs(kdtree::Any,datcrt::Matrix{Float64},knum::Number,lia::BitVector)
-
-    lia[scipyspat.cKDTree.query(kdtree,datcrt, k=knum)[2],:] .= 0
+function findpairs(kdtree::KDTree, datcrt::Matrix{Float64}, knum::Number, lia::BitVector)
+    indices, _ = knn(kdtree, datcrt', knum)  # knn returns Vector{Vector{Int}}; transpose datcrt to dims x n_queries
+    flat_indices = vcat(indices...)  # Flatten all indices across queries
+    lia[flat_indices] .= 0  # Set bits to 0;
     return lia
 
 end
 
-function fillmat!(canrad::CANRAD,kdtree::PyObject,datcrt::Matrix{Float64},
+function fillmat!(canrad::CANRAD,kdtree::KDTree,datcrt::Matrix{Float64},
     knum::Number,mat2ev::Matrix{Int64})
 
     @unpack diameter, lia = canrad
