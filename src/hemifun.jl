@@ -392,14 +392,15 @@ function prepsurfdat!(matcrt_x::Vector{Float64},matcrt_y::Vector{Float64},matcrt
 
 end
 
-function findpairs(kdtree::Any,datcrt::Matrix{Float64},knum::Number,lia::BitVector)
-
-    lia[scipyspat.cKDTree.query(kdtree,datcrt, k=knum)[2],:] .= 0
+function findpairs(kdtree::KDTree,datcrt::Matrix{Float64},knum::Number,lia::BitVector)
+    indices, _ = knn(kdtree, datcrt', knum)  # knn returns Vector{Vector{Int}}; transpose datcrt to dims x n_queries
+    flat_indices = vcat(indices...)  # Flatten all indices across queries
+    lia[flat_indices] .= 0  # Set bits to 0;
     return lia
 
 end
 
-function fillmat!(canrad::CANRAD,kdtree::PyObject,datcrt::Matrix{Float64},
+function fillmat!(canrad::CANRAD,kdtree::KDTree,datcrt::Matrix{Float64},
     knum::Number,mat2ev::Matrix{Int64})
 
     @unpack diameter, lia = canrad
