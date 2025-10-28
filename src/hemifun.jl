@@ -25,16 +25,26 @@ end
 function findelev!(inpcx::Vector{Float64},inpcy::Vector{Float64},inpcz::Vector{Float64},x,y,
     limits::Vector{Float64},peri::Number,elev::Vector{Float64},interp_method::String="linear")
 
+    #compute limits and clip data
     getlimits!(limits,x,y,peri)
-
     clipdat!(inpcx,inpcy,inpcz,limits,Vector{Bool}(undef,size(inpcx,1))),peri;
 
-    if interp_method == "cubic"
+    #interpolation
+     if interp_method == "nearest"
+        xtree = KDTree(hcat(inpcx, inpcy)')
+        for i in eachindex(x)
+            idxs, _ = knn(xtree, [x[i], y[i]], 1)
+            elev[i] = inpcz[idxs[1]]
+        end
+    elseif interp_method == "cubic"
+        #play with the value inside s
         spl = Spline2D(inpcx, inpcy, inpcz; kx=3, ky=3, s = length(inpcx))
         elev .= spl.(x, y)
-    else
+    elseif interp_method == "linear"
         spl = Spline2D(inpcx, inpcy, inpcz; kx=1, ky=1, s = length(inpcx))
         elev .= spl.(x, y)
+    else
+        error("Unsupported interpolation method: $interp_method")
     end
 end
 
@@ -42,14 +52,26 @@ function findelev(inpcx::Vector{Float64},inpcy::Vector{Float64},inpcz::Vector{Fl
     peri=20.0::Number,interp_method::String="linear")
 
     limits = getlimits!(Vector{Float64}(undef,4),x,y,peri)
-
     clipdat!(inpcx,inpcy,inpcz,limits,Vector{Bool}(undef,size(inpcx,1))),peri;
-    if interp_method == "cubic"
+
+    if interp_method == "nearest"
+        tree = KDTree(hcat(inpcx, inpcy)')
+        if isa(x, Number)
+            idxs, _ = knn(tree, [x, y], 1)
+            return [inpcz[idxs[1]]]
+        else
+            pts = hcat(x, y)'
+            idxs, _ = knn(tree, pts, 1)
+            return inpcz[idxs[:]]
+        end
+    elseif interp_method == "cubic"
          spl = Spline2D(inpcx, inpcy, inpcz; kx=3, ky=3, s = length(inpcx))
-    else
+    elseif interp_method == "linear"
         spl = Spline2D(inpcx, inpcy, inpcz; kx=1, ky=1, s = length(inpcx))
+    else
+        error("Unsupported interpolation method: $interp_method")
     end
-    return spl(x, y)
+    return spl.(x, y)
 
 end
 
