@@ -4,13 +4,9 @@ using DelimitedFiles, DataStructures, LasIO, LazIO,
     Statistics, Dates, Interpolations, Images,
     DataFrames, Format, Distributed, Distributions,
     SpatialFileIO, NCDatasets, Chain, Pkg, Proj, MarketTechnicals,
-    Parameters, Impute, NearestNeighbors
+    Parameters, Impute, NearestNeighbors, Dierckx
 
 using Conda, PyCall
-
-function __init__()
-    @eval global pyinterp  = pyimport("scipy.interpolate")
-end
 
 include("constants.jl")
 include("fileio.jl")
@@ -23,7 +19,6 @@ include("ter2rad.jl")
 include("shi2rad.jl")
 
 export
-    pyinterp,
     CANRAD,
     SOLAR,
     RADIATION,

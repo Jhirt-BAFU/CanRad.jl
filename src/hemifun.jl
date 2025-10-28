@@ -28,8 +28,14 @@ function findelev!(inpcx::Vector{Float64},inpcy::Vector{Float64},inpcz::Vector{F
     getlimits!(limits,x,y,peri)
 
     clipdat!(inpcx,inpcy,inpcz,limits,Vector{Bool}(undef,size(inpcx,1))),peri;
-    elev .= pyinterp.griddata(hcat(inpcx,inpcy), inpcz, (x, y), method=interp_method)
 
+    if interp_method == "cubic"
+        spl = Spline2D(inpcx, inpcy, inpcz; kx=3, ky=3, s = length(inpcx))
+        elev .= spl.(x, y)
+    else
+        spl = Spline2D(inpcx, inpcy, inpcz; kx=1, ky=1, s = length(inpcx))
+        elev .= spl.(x, y)
+    end
 end
 
 function findelev(inpcx::Vector{Float64},inpcy::Vector{Float64},inpcz::Vector{Float64},x,y,
@@ -38,7 +44,12 @@ function findelev(inpcx::Vector{Float64},inpcy::Vector{Float64},inpcz::Vector{Fl
     limits = getlimits!(Vector{Float64}(undef,4),x,y,peri)
 
     clipdat!(inpcx,inpcy,inpcz,limits,Vector{Bool}(undef,size(inpcx,1))),peri;
-    return pyinterp.griddata(hcat(inpcx,inpcy), inpcz, (x, y), method=interp_method)
+    if interp_method == "cubic"
+         spl = Spline2D(inpcx, inpcy, inpcz; kx=3, ky=3, s = length(inpcx))
+    else
+        spl = Spline2D(inpcx, inpcy, inpcz; kx=1, ky=1, s = length(inpcx))
+    end
+    return spl(x, y)
 
 end
 
