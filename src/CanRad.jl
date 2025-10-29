@@ -6,8 +6,6 @@ using DelimitedFiles, DataStructures, LasIO, LazIO,
     SpatialFileIO, NCDatasets, Chain, Pkg, Proj, MarketTechnicals,
     Parameters, Impute, NearestNeighbors, Dierckx
 
-using Conda, PyCall
-
 include("constants.jl")
 include("fileio.jl")
 include("initialise.jl")
