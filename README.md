@@ -25,7 +25,7 @@ Both models can be run on an HPC to cover large domains. An example implementati
 
 ## Installation
 
-CanRad requires [SpatialFileIO.jl](https://github.com/c-webster/SpatialFileIO.jl) and the python package `scipy`. 
+CanRad requires [SpatialFileIO.jl](https://github.com/c-webster/SpatialFileIO.jl).
 
 `SpatialFileIO` can be added by
 ```
